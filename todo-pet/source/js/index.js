@@ -217,10 +217,13 @@ function chooseTab(event) {
 
   tabWrapper.style.left = point - 24 + 'px';
 
+  tasksToShow(tab);
+}
 
+function tasksToShow(tabEl) {
   const currentTaskStorage = tasksStorage.getCurrentStorage();
 
-  if (tab.classList.contains('active')) {
+  if (tabEl.classList.contains('active')) {
     let index = 0;
     for (let task in currentTaskStorage) {
       if (currentTaskStorage[task].isChecked) {
@@ -230,7 +233,7 @@ function chooseTab(event) {
       }
       index++;
     }
-  } else if (tab.classList.contains('completed')) {
+  } else if (tabEl.classList.contains('completed')) {
     let index = 0;
     for (let task in currentTaskStorage) {
       if (!currentTaskStorage[task].isChecked) {
@@ -240,13 +243,14 @@ function chooseTab(event) {
       }
       index++;
     }
-  } else if (tab.classList.contains('all')) {
+  } else if (tabEl.classList.contains('all')) {
     for (let task of taskContainer.children) {
       if (getComputedStyle(task).marginTop == "-135px") {
         moveTask(task);
       }
     }
   }
+
 }
 
 function clearCompletedTasks(event) {
@@ -283,4 +287,5 @@ function resetTabWrapper(event) {
     return;
 
   tabWrapper.style.left = '72px';
+  tasksToShow(document.querySelector('.tabs-field__item.all'));
 }
