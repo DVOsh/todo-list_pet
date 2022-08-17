@@ -19,6 +19,7 @@ const taskInput = document.querySelector('.main__input');
 const taskContainer = document.querySelector('.main-field__container');
 const tabsContainer = document.querySelector('.tabs-field__items');
 
+const tabWrapper = document.querySelector('.tabs-field__wrapper');
 const activeTabEl = document.querySelector('.tabs-field__item.active');
 const completedTabEl = document.querySelector('.tabs-field__item.completed');
 const clearTabEl = document.querySelector('.tabs-field__close-tab');
@@ -30,6 +31,8 @@ taskContainer.addEventListener('dblclick', editTask);
 tabsContainer.addEventListener('click', chooseTab);
 clearTabEl.addEventListener('click', clearCompletedTasks);
 clearTabEl.addEventListener('mouseover', showClearTabTooltip);
+activeTabEl.addEventListener('transitionstart', resetTabWrapper);
+completedTabEl.addEventListener('transitionstart', resetTabWrapper);
 
 function addTask(event) {
   if (event.code != 'Enter' || !this.value || this.value.match(/^\s*$/))
@@ -210,7 +213,6 @@ function chooseTab(event) {
   if (!tab)
     return;
 
-  const tabWrapper = document.querySelector('.tabs-field__wrapper');
   const point = tab.getBoundingClientRect().x - tabsContainer.getBoundingClientRect().x;
 
   tabWrapper.style.left = point - 24 + 'px';
@@ -276,3 +278,9 @@ function showClearTabTooltip(event) {
   this.addEventListener('mouseout', () => { toolTipEl.remove() });
 }
 
+function resetTabWrapper(event) {
+  if (this.classList.contains('visible'))
+    return;
+
+  tabWrapper.style.left = '72px';
+}
