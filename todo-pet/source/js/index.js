@@ -80,6 +80,7 @@ function onTaskCheckChange(event) {
   tasksStorage.onItemCheck(taskTextEl.innerText, this.checked);
 
   checkTabs();
+  tasksToShow(tabsContainer.querySelector('.current'));
 }
 
 function editTask(event) {
