@@ -213,11 +213,21 @@ function chooseTab(event) {
   if (!tab)
     return;
 
+  //Передвижение tab_wrapper на текущую вкладку
   const point = tab.getBoundingClientRect().x - tabsContainer.getBoundingClientRect().x;
-
   tabWrapper.style.left = point - 24 + 'px';
 
+  setCurrentTab(tab);
   tasksToShow(tab);
+}
+
+//Добавление класса current на текущую вкладку и удаление с остальных
+function setCurrentTab(tabEl) {
+  for (let tab of tabsContainer.children) {
+    if (tab.classList.contains('current'))
+      tab.classList.remove('current');
+  }
+  tabEl.classList.add('current');
 }
 
 function tasksToShow(tabEl) {
@@ -287,5 +297,6 @@ function resetTabWrapper(event) {
     return;
 
   tabWrapper.style.left = '72px';
-  tasksToShow(document.querySelector('.tabs-field__item.all'));
+  setCurrentTab(tabsContainer.querySelector('.all'));
+  tasksToShow(tabsContainer.querySelector('.all'));
 }
