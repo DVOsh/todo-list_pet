@@ -13,7 +13,7 @@ const taskItemHtml = `
 `;
 const tasksStorage = new Storage();
 
-
+const WINDOW_HEIGHT = document.documentElement.clientHeight;
 
 const taskInput = document.querySelector('.main__input');
 const taskContainer = document.querySelector('.main-field__container');
@@ -39,13 +39,24 @@ function addTask(event) {
     return;
 
   const currentTaskStorage = tasksStorage.getCurrentStorage();
-  let taskIndex = 0;
 
+  //Логика для повторяющихся задач
+  let taskIndex = 0;
   for (let task of Object.values(currentTaskStorage)) {
     if (task.value == this.value) {
       //Добавить класс для контейнера задачи
       taskContainer.children[taskIndex + 1].classList.add('duplicated');
       setTimeout(() => { taskContainer.children[taskIndex + 1].classList.remove('duplicated'); }, 500);
+
+      //Прокрутка к повторяющейся задаче
+      let taskEl = taskContainer.children[taskIndex + 1];
+      let taskElCoord = taskEl.getBoundingClientRect();
+      if ((taskElCoord.y + taskElCoord.height) > WINDOW_HEIGHT) {
+        taskEl.scrollIntoView({
+          behavior: 'smooth', //Не работает!
+          block: 'center'
+        });
+      }
       return;
     }
     taskIndex++;
